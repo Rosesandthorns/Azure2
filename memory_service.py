@@ -34,7 +34,7 @@ class UserProfile:
 
 
 class MemoryService:
-    def __init__(self, sqlite_path: str, transparency_log_path: str | None = None) -> None:
+    def __init__(self, sqlite_path: str, transparency_log_path: Optional[str] = None) -> None:
         self.sqlite_path = sqlite_path
         self.logger = logging.getLogger(self.__class__.__name__)
         self.transparency_log_path = transparency_log_path
@@ -127,7 +127,7 @@ class MemoryService:
         self.conn.commit()
         if self.transparency_log_path:
             with open(self.transparency_log_path, "a", encoding="utf-8") as file:
-                file.write(f\"{datetime.utcnow().isoformat()} {event} {payload}\\n\")
+                file.write(f"{datetime.utcnow().isoformat()} {event} {payload}\n")
 
     def create_memory(
         self,

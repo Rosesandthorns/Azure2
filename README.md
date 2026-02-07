@@ -30,8 +30,10 @@ This is **Azure-codex** (your current working version) with ONLY these features 
 
 2. **Run it**:
    ```bash
-   python main.py
+   python smart_launch.py
    ```
+   The smart launcher will ensure a supported Python version is used, install
+   dependencies, and then start the bot.
 
 ## New Configuration Options
 
