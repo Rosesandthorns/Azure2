@@ -127,7 +127,7 @@ class MemoryService:
         self.conn.commit()
         if self.transparency_log_path:
             with open(self.transparency_log_path, "a", encoding="utf-8") as file:
-                file.write(f\"{datetime.utcnow().isoformat()} {event} {payload}\\n\")
+                file.write(f"{datetime.utcnow().isoformat()} {event} {payload}\n")
 
     def create_memory(
         self,
