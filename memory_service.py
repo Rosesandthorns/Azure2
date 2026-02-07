@@ -34,7 +34,7 @@ class UserProfile:
 
 
 class MemoryService:
-    def __init__(self, sqlite_path: str, transparency_log_path: str | None = None) -> None:
+    def __init__(self, sqlite_path: str, transparency_log_path: Optional[str] = None) -> None:
         self.sqlite_path = sqlite_path
         self.logger = logging.getLogger(self.__class__.__name__)
         self.transparency_log_path = transparency_log_path

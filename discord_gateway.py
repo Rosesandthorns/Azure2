@@ -4,7 +4,7 @@ import json
 import logging
 import random
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 from datetime import datetime
 
 import discord
@@ -69,7 +69,7 @@ class DiscordGateway(discord.Client):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.belief_tracker = BeliefTracker(memory_service)
         self.reasoning_engine = ReasoningEngine(memory_service, self.belief_tracker)
-        self.last_channel: discord.abc.Messageable | None = None
+        self.last_channel: Optional[discord.abc.Messageable] = None
         self.last_response_at: Dict[int, float] = {}
         # DM access control (from Azure-improved)
         self.dm_whitelist = set(config.dm_whitelist or [])
@@ -399,7 +399,7 @@ class DiscordGateway(discord.Client):
         content: str,
         retrieved: List[MemoryEntry],
         force_store: bool = False,
-    ) -> MemoryEntry | None:
+    ) -> Optional[MemoryEntry]:
         importance = min(1.0, 0.2 + len(content) / 200)
         lowered = content.lower()
         if any(phrase in lowered for phrase in {"i like", "my favorite", "i am", "i'm"}):
@@ -458,7 +458,7 @@ class DiscordGateway(discord.Client):
             source_memory_ids=[],
         )
 
-    def _store_anticipation_memory(self, user_id: int, content: str) -> MemoryEntry | None:
+    def _store_anticipation_memory(self, user_id: int, content: str) -> Optional[MemoryEntry]:
         lowered = content.lower()
         if any(term in lowered for term in {"tomorrow", "next week", "later", "soon"}):
             summary = f"Potential future event mentioned: {content[:160]}"
@@ -526,7 +526,7 @@ class DiscordGateway(discord.Client):
             return False
         return True
 
-    def pick_dm_target(self) -> UserProfile | None:
+    def pick_dm_target(self) -> Optional[UserProfile]:
         profiles = sorted(
             self.profile_service.list_profiles(),
             key=lambda p: p.like_score,
